@@ -30,18 +30,24 @@ class GameMap:
         self.tiles = np.full(
             shape=(width, height), 
             fill_value=tile_types.wall, 
-            order="F")
+            order="F"
+        ) # All tiles
         
         self.visible = np.full(
             (width, height),
             fill_value=False,
-            order="F")
+            order="F"
+        ) # Tiles the player can see now
         
         self.explored = np.full(
             (width, height),
             fill_value=False,
             order="F"
-        )
+        ) # Tiles the player has seen before
+        
+    @property
+    def gamemap(self) -> GameMap:
+        return self
         
     @property
     def actors(self) -> Iterator[Actor]:
