@@ -175,8 +175,14 @@ class MainGameEventHandler(EventHandler):
         action: Optional[Action] = None
     
         key = event.sym
+        modifier = event.mod
         
         player = self.engine.player
+
+        if key == tcod.event.KeySym.PERIOD and modifier & (
+            tcod.event.Modifier.LSHIFT | tcod.event.Modifier.RSHIFT
+        ):
+            return actions.TakeStairsAction(player)
 
         if key in MOVE_KEYS:
             dx, dy = MOVE_KEYS[key]
@@ -210,11 +216,11 @@ class GameOverEventHandler(EventHandler):
         raise exceptions.QuitWithoutSaving() # Avoid saving a finished game.
         
     def ev_quit(self, event: tcod.event.Quit) -> None:
-        self.on_quit()
+        self.on_quit(event)
     
     def ev_keydown(self, event: tcod.event.KeyDown) -> Action | None:
         if event.sym == tcod.event.KeySym.ESCAPE:
-            self.on_quit()
+            self.on_quit(event)
         
     
         
